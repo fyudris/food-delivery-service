@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres-user:
+    image: postgres:15
+    container_name: postgres-user
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: fooddb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - user_postgres_data:/var/lib/postgresql/data
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-user
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/fooddb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+
+volumes:
+  user_postgres_data:
+
