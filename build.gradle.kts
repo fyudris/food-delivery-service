@@ -21,6 +21,12 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.springframework.boot:spring-boot-starter-web") // REST API
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // JPA
+	implementation("org.postgresql:postgresql") // PostgreSQL driver
+	implementation("org.springframework.boot:spring-boot-devtools") // Auto reload (optional)
+	implementation("org.springframework.boot:spring-boot-starter-actuator") // Metrics/Health (optional)
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
