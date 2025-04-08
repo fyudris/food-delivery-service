@@ -1,4 +1,4 @@
-package com.deliveryhero.clone.food_delivery_service
+package com.deliveryhero.clone.user_service
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

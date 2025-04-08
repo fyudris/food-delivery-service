@@ -1,4 +1,4 @@
-package com.deliveryhero.clone.food_delivery_service.config
+package com.deliveryhero.clone.user_service.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

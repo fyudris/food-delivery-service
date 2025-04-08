@@ -1,4 +1,4 @@
-package com.deliveryhero.clone.food_delivery_service.domain
+package com.deliveryhero.clone.user_service.domain
 
 import jakarta.persistence.*
 

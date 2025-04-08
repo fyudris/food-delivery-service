@@ -1,9 +1,9 @@
-package com.deliveryhero.clone.food_delivery_service.controller
+package com.deliveryhero.clone.user_service.controller
 
-import com.deliveryhero.clone.food_delivery_service.domain.User
-import com.deliveryhero.clone.food_delivery_service.repository.UserRepository
-import com.deliveryhero.clone.food_delivery_service.dto.CreateUserRequest
-import com.deliveryhero.clone.food_delivery_service.dto.UserResponse
+import com.deliveryhero.clone.user_service.domain.User
+import com.deliveryhero.clone.user_service.repository.UserRepository
+import com.deliveryhero.clone.user_service.dto.CreateUserRequest
+import com.deliveryhero.clone.user_service.dto.UserResponse
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

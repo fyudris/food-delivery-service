@@ -1,6 +1,6 @@
-package com.deliveryhero.clone.food_delivery_service.repository
+package com.deliveryhero.clone.user_service.repository
 
-import com.deliveryhero.clone.food_delivery_service.domain.User
+import com.deliveryhero.clone.user_service.domain.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

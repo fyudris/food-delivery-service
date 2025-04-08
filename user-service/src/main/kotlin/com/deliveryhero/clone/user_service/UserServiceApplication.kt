@@ -1,11 +1,11 @@
-package com.deliveryhero.clone.food_delivery_service
+package com.deliveryhero.clone.user_service
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class FoodDeliveryServiceApplication
+class UserServiceApplication
 
 fun main(args: Array<String>) {
-	runApplication<FoodDeliveryServiceApplication>(*args)
+	runApplication<UserServiceApplication>(*args)
 }
