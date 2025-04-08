@@ -2,20 +2,26 @@ package com.deliveryhero.clone.food_delivery_service.controller
 
 import com.deliveryhero.clone.food_delivery_service.domain.User
 import com.deliveryhero.clone.food_delivery_service.repository.UserRepository
+import com.deliveryhero.clone.food_delivery_service.dto.CreateUserRequest
+import com.deliveryhero.clone.food_delivery_service.dto.UserResponse
+
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @RestController
 @RequestMapping("/api/users")
-class UserController (private val userRepository: UserRepository){
+class UserController (private val userRepository: UserRepository, private val passwordEncoder: PasswordEncoder){
     @PostMapping
-    fun createUser(@RequestBody request: CreateUserRequest): ResponseEntity<User> {
+    fun createUser(@RequestBody request: CreateUserRequest): ResponseEntity<UserResponse> {
+        val hashedPassword = passwordEncoder.encode(request.password)
         val user = User(
             username = request.username,
             email = request.email,
-            password = request.password // will hash later
+            password = hashedPassword // will hash later
         )
-        return ResponseEntity.ok(userRepository.save(user))
+        val savedUser = userRepository.save(user)
+        return ResponseEntity.ok(UserResponse(savedUser.id, savedUser.username, savedUser.email))
     }
 
     @GetMapping

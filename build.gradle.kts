@@ -26,6 +26,7 @@ dependencies {
 	implementation("org.postgresql:postgresql") // PostgreSQL driver
 	implementation("org.springframework.boot:spring-boot-devtools") // Auto reload (optional)
 	implementation("org.springframework.boot:spring-boot-starter-actuator") // Metrics/Health (optional)
+	implementation("org.springframework.boot:spring-boot-starter-security") // BCryptPasswordEncoder
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
