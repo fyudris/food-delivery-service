@@ -4,5 +4,6 @@ data class LoginResponse(
     val id: Long,
     val username: String,
     val email: String,
-    val message: String
+    val message: String = "Login Successful",
+    val token: String
 )
