@@ -1,263 +1,349 @@
-# 🧑‍💻 My Backend Learning Journey: Building a Secure User Microservice with Spring Boot, Kotlin & JWT
+# 🧑‍💻 (DRAFT) My Backend Learning Journey: Building a Secure User Microservice with Spring Boot, Kotlin & JWT
+
+
+Welcome to my learning journey! 🎓 This project was built from scratch by me, a curious learner, with the goal of understanding how modern backend systems work — and especially to **learn** Kotlin, Spring Boot, REST, Microservices, Authentication, and Docker – all in a practical way. The goal was not only to make something that works but something **educational and reproducible** for other beginners.
+
+Mistakes were made. Lessons were learned. Logs were stared at. Victory was earned.
 
 ---
 
-## 📌 Introduction
-
-As someone diving into backend development, I set out to build a **user microservice** for a food delivery system. My goals were simple:
-
-- Learn how backend APIs work
-
-- Store and authenticate users securely
-
-- Understand modern backend tech like **Spring Boot**, **PostgreSQL**, **Docker**, and **JWT**
+Feel free to fork this and experiment. Happy coding! 😊
 
 
-Spoiler alert: I not only learned how it all works — I built it from scratch, debugged real-world issues, and came out much more confident as a backend developer 💪
 
-This blog post walks you through what I learned, how I structured things, and what each part means (especially if you're a beginner like me).
+## 🧠 What is This?
 
----
+It’s a **User Service** — the part of an application responsible for:
 
-## 🔨 Tools I Used
+- Creating user accounts (signup/register)
+- Letting users log in (authentication)
+- Returning a token (JWT) that proves who the user is
+- Allowing users to update or delete their own accounts
+- Securing certain routes so only logged-in users can access them
 
-- **Kotlin** (clean and expressive syntax)
+This is part of a bigger dream: a **Delivery Hero clone** (like UberEats or DoorDash).
 
-- **Spring Boot** (for rapid backend development)
+### 💡 What Did I Want to Learn?
 
-- **PostgreSQL** (as the database)
+| Concept                | What I Wanted to Understand                                                                 |
+|------------------------|----------------------------------------------------------------------------------------------|
+| ✅ Kotlin              | A modern programming language that runs on the JVM and works with Spring Boot.              |
+| ✅ Spring Boot         | A powerful Java/Kotlin framework that makes building APIs easy.                             |
+| ✅ REST APIs           | How to design web APIs using HTTP verbs like GET, POST, PUT, DELETE.                        |
+| ✅ JWT Authentication  | How to securely log users in and protect data using JSON Web Tokens.                        |
+| ✅ Microservices       | How to break big apps into smaller services that can scale independently.                   |
+| ✅ Secure Endpoints    | How to make sure only authenticated users can access private data.                         |
 
-- **Docker** (to run services in containers)
+### 📦 What’s in This Service?
 
-- **JWT** (for stateless authentication)
+| Feature                      | Description                                                                 |
+|------------------------------|-----------------------------------------------------------------------------|
+| ✅ User Registration          | Create a new user with email, password, username.                          |
+| ✅ Duplicate Check            | Prevent registering with the same email twice.                             |
+| ✅ Password Hashing           | Passwords are encrypted using **BCrypt**, not stored in plain text.        |
+| ✅ JWT Token Auth             | Users get a **secure token** after logging in.                             |
+| ✅ Login                      | Validate credentials and return token.                                     |
+| ✅ Token-Based Access         | Only users with valid tokens can access protected routes.                  |
+| ✅ Update Profile             | Update your username or email.                                             |
+| ✅ Delete Account             | Securely delete your own account.                                          |
 
-- **Postman** (for testing the APIs)
+### 🧱 Tech Stack
 
+| Tool/Library         | Why I Used It                                                                              |
+|----------------------|---------------------------------------------------------------------------------------------|
+| Kotlin               | Modern, concise syntax. I wanted to try something new and readable.                        |
+| Spring Boot          | Industry-standard for backend APIs. Easy config, solid ecosystem.                         |
+| Spring Security      | Handles authentication, login, and route protection.                                      |
+| JWT (jjwt library)   | Token-based authentication. Perfect for stateless microservices.                          |
+| PostgreSQL           | Open-source relational database. Great for learning.                                       |
+| JPA (Hibernate)      | Allows writing less SQL. Works well with Kotlin and Spring.                                |
 
----
+## 📚 Key Concepts Explained
 
-## 🧠 Understanding Microservices
+### 🌐 What is a REST API?
 
-Before anything, I had to learn what a microservice is.
+REST = **REpresentational State Transfer**  
+It’s a way to design web APIs using standard HTTP verbs:
 
-> 🧩 A **microservice** is a small, focused application that handles one job — like user management, ordering, or payments — and communicates with other services over the network.
+| HTTP Verb | What It Does     | Example                           |
+|-----------|------------------|-----------------------------------|
+| `POST`    | Create something | `POST /api/users` → create user   |
+| `GET`     | Read something   | `GET /api/users` → get user list  |
+| `PUT`     | Update something | `PUT /api/users/1` → update user  |
+| `DELETE`  | Delete something | `DELETE /api/users/1` → delete user|
 
-So for a food delivery system, we might have:
+### 🔐 What is JWT?
 
-- `user-service`
+**JWT = JSON Web Token**
 
-- `menu-service`
-
-- `order-service`
-
-- etc.
-
-
-I started by building the **user-service**.
-
----
-
-## 📁 Project Structure
-
-Here’s how I organized my folders and files:
+It's a small, secure text token that proves who the user is. When a user logs in, we give them a JWT. On every request, they send it back:
 
 ```
-user-service/
-│
-├── controller/     # API endpoints
-├── domain/         # User entity/model
-├── repository/     # Database access
-├── dto/            # Data Transfer Objects (input/output)
-├── util/           # JWT utility
-├── config/         # Spring Security config
-└── application.properties  # DB config
-
+Authorization: Bearer <your_token>
 ```
 
-Each layer had a clear responsibility. This was a huge mindset shift for me — understanding **separation of concerns** made everything easier to debug and test.
+We verify that token before showing any sensitive data.
+
+### 🧩 What are Microservices?
+
+Instead of building **one giant application**, we split it into **small services**.
+
+| Microservice       | Responsibility                  |
+|--------------------|----------------------------------|
+| `user-service`     | Login, signup, profile           |
+| `menu-service`     | Show restaurant items            |
+| `order-service`    | Handle orders and payments       |
+
+Each service runs independently but can talk to each other via **HTTP + JWT tokens**.
+
+## 🔨 Project Structure
+
+```
+src/main/kotlin/
+└── com.deliveryhero.clone.user_service/
+    ├── controller/        <-- REST API endpoints
+    ├── domain/            <-- User entity
+    ├── dto/               <-- Request/Response models
+    ├── repository/        <-- JPA repositories
+    ├── util/              <-- JWT utils
+    ├── config/            <-- Spring Security configuration
+```
+
+## 🔐 Authentication Flow
+
+```
+Client -> POST /api/users (register) -> 200 OK
+Client -> POST /api/users/login -> JWT Token
+Client -> GET /api/users -> (Authorization: Bearer token)
+```
+
+## 🧪 How to Test the API
+
+### 1. Register
+
+```
+POST /api/users
+{
+  "email": "me@example.com",
+  "username": "me",
+  "password": "123456"
+}
+```
+
+### 2. Login
+
+```
+POST /api/users/login
+{
+  "email": "me@example.com",
+  "password": "123456"
+}
+```
+
+✅ This returns a token!
+
+### 3. Access Protected Routes
+
+```
+GET /api/users
+Authorization: Bearer <your_token_here>
+```
+
+
+
+## 📈 Future Plans
+
+| Area                  | Plan                                                                |
+|------------------------|---------------------------------------------------------------------|
+| Error Handling         | Consistent error format (with custom exception classes)             |
+| Tests                 | Add unit tests and integration tests                                |
+| Swagger/OpenAPI       | Auto-generate documentation for all routes                          |
+| Role-Based Access     | Separate access for `ADMIN`, `USER` etc.                            |
+| Refresh Tokens        | Support long sessions with refresh tokens                           |
+| Rate Limiting         | Prevent brute force attacks on login                                |
+
+
+
+## 📎 How to Run
+
+```bash
+git clone https://github.com/yourusername/user-service-kotlin
+cd user-service-kotlin
+./gradlew bootRun
+```
 
 ---
 
-## 🧰 PostgreSQL: My First Real Database
+## 🧠 Beginner-Friendly Concepts and Explanations
 
-I used Docker to spin up PostgreSQL:
+This project was built from scratch by a beginner, for beginners. Here's a breakdown of important concepts:
 
-```
-docker run --name food-postgres -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:15
-```
-Later, I switched to a local Postgres installation via Postgres.app for better integration with IntelliJ.
+### 🧪 REST & CRUD
 
-In the `application.properties`, I configured my DB connection:
+| Term | Meaning | Example in this Project |
+|------|--------|--------------------------|
+| REST | REpresentational State Transfer – A way to structure communication between services using HTTP verbs | `/api/users` follows REST principles |
+| CRUD | Create, Read, Update, Delete – core operations of data management | We implement all 4 with user endpoints |
 
-properties
-
-CopyEdit
-```
-spring.datasource.url=jdbc:postgresql://localhost:5432/fooddb spring.datasource.username=postgres
-spring.datasource.password=password
-```
-
+| HTTP Verb | CRUD Action | Description |
+|-----------|-------------|-------------|
+| `POST`    | Create      | Create a new resource (e.g. user registration) |
+| `GET`     | Read        | Retrieve data (e.g. fetch users) |
+| `PUT`     | Update      | Modify existing data (e.g. update profile) |
+| `DELETE`  | Delete      | Remove data (e.g. delete account) |
 
 ---
 
-## 👥 User Registration
+### 📦 Kotlin, Spring Boot & Microservices
 
-I created a POST endpoint to register users:
+| Term | Meaning |
+|------|---------|
+| **Kotlin** | A modern language that runs on the JVM – concise, expressive, and safe |
+| **Spring Boot** | A framework to quickly build Java/Kotlin apps with lots of built-in tools |
+| **Microservice** | A small, focused service (like `user-service`) that can run independently and communicate with others (like `menu-service`) |
 
-
-
-```
-@PostMapping("/api/users")
-fun createUser(@RequestBody request: CreateUserRequest): ResponseEntity<UserResponse>
-```
-
-**Security tip**: I used **BCrypt** to hash passwords before storing them.
-
----
-
-## 🔐 JWT Authentication (Login)
-
-This was the most exciting part! I learned how JWT (JSON Web Tokens) work and how to use them in Spring Boot.
-
-### What happens at login:
-
-1. User sends email and password.
-
-2. If correct → I generate a JWT token with `JwtUtil`.
-
-3. The token is returned and must be included in future requests.
-
-
-
-`val token = jwtUtil.generateToken(user.email)`
-
-### What happens on protected routes:
-
-- A custom `JwtAuthenticationFilter` checks the `Authorization` header.
-
-- If the token is valid, Spring sets the security context.
-
+Why Microservices?
+- Easy to manage and scale each service separately
+- Helps build large systems in small, testable pieces
+- Encourages better code structure and responsibility
 
 ---
 
-## 🛡️ SecurityConfig with Spring Security
+### 🛠️ Postman Commands
 
-I customized `SecurityConfig` so some endpoints are public and others require a valid JWT:
+Use these commands in Postman to test your API:
 
+#### ✅ Register a New User
 ```
-http
-    .csrf { it.disable() }
-    .authorizeHttpRequests {
-        it.requestMatchers("/api/users/login", "/api/users").permitAll()
-        it.anyRequest().authenticated()
-    }
-    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+POST http://localhost:8080/api/users
+Content-Type: application/json
 
+{
+  "username": "funfun",
+  "email": "funfun@example.com",
+  "password": "funfun"
+}
 ```
 
-This means:
+#### ✅ Login User
+```
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
 
-- `/api/users` and `/login` → Public
+{
+  "email": "funfun@example.com",
+  "password": "funfun"
+}
+```
 
-- All other endpoints → Require a valid token
+This will return a JWT `token` – use it for the next calls:
 
+#### 🔐 Get All Users (Requires Token)
+```
+GET http://localhost:8080/api/users
+Authorization: Bearer <your_token>
+```
 
----
+#### 📝 Update User
+```
+PUT http://localhost:8080/api/users/1
+Authorization: Bearer <your_token>
+Content-Type: application/json
 
-## ✅ Testing With Postman
+{
+  "username": "newUsername"
+}
+```
 
-I used Postman to:
-
-4. Register a user
-
-5. Log in to get a token
-
-6. Access protected routes with `Bearer <token>` in the header
-
-
-Seeing that 200 OK response with my user data felt like pure victory 😄
-
----
-
-## 💥 Bugs I Faced (and Fixed)
-
-- **Port conflicts**: When using Docker and IntelliJ together.
-
-- **Entity errors**: Hibernate required a no-arg constructor.
-
-- **Password auth failures**: Wrong password or wrong user setup.
-
-- **Database errors**: Wrong DB name or missing tables.
-
-
-Each of these helped me learn how to read stack traces, dig into logs, and appreciate the power of Spring Boot's error handling.
-
----
-
-## 💡 What I Learned
-
-- How to structure a clean backend project.
-
-- The value of DTOs for separating input/output.
-
-- How to secure endpoints with JWT and Spring Security.
-
-- Basic but real-world use of Docker + Postgres.
-
-- How to test APIs using Postman.
-
-- How microservices can be developed and run independently.
-
+#### 🗑️ Delete User
+```
+DELETE http://localhost:8080/api/users/1
+Authorization: Bearer <your_token>
+```
 
 ---
 
-## 🛣️ What’s Next?
+### 🐘 PostgreSQL Setup (via Docker)
 
-Here’s what I want to build next:
+This project uses **PostgreSQL** for storing user data.
 
--  `menu-service`: Manage dishes, categories, prices
+#### 🔧 Run Postgres with Docker
+```bash
+docker run --name deliveryhero-db   -e POSTGRES_DB=deliveryhero   -e POSTGRES_USER=postgres   -e POSTGRES_PASSWORD=password   -p 5432:5432   -d postgres
+```
 
--  `order-service`: Handle order creation and payment
+- DB: `deliveryhero`
+- User: `postgres`
+- Password: `password`
 
--  API Gateway + Service Registry
-
--  Docker Compose for multi-service orchestration
-
--  Role-based security (`USER`, `ADMIN`)
-
+#### 📦 Connect in `application.yml`
+Make sure your Spring Boot app connects to this DB. Example:
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/deliveryhero
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+```
 
 ---
 
-## ✨ Final Thoughts
+### 📊 Diagram: System Overview
 
-Building this user-service was a massive leap in my backend journey. The best part? I now **understand** what’s happening under the hood — not just copying tutorials.
+```
++-----------------+         +-----------------+
+|                 |  REST   |                 |
+|   Postman       +-------->+  user-service   |
+|                 |         | (Spring Boot)   |
++--------+--------+         +--------+--------+
+                                 |
+                                 | JPA
+                           +-----v------+
+                           |  Postgres  |
+                           +------------+
+```
 
-> If you’re just starting: don’t worry if it feels confusing. Keep building, break things, and read those stack traces like a detective.
+---
 
-Happy coding! 🚀
+## 🔮 Future Improvements & Ideas
+
+| Feature | Motivation |
+|--------|------------|
+| Email verification | Confirm user authenticity |
+| Password reset via token | Recover forgotten credentials |
+| Rate limiting / request throttling | Prevent abuse of login or delete endpoints |
+| Admin role | Add authorization levels |
+| Dockerize whole service | For deployment |
+| Menu-service | New microservice for managing food/menu data |
+| API Gateway (e.g., Spring Cloud Gateway) | Route and secure requests across services |
+| Centralized logging | Use tools like ELK or Loki |
+
+---
+
+
 
 ## ✅ What You Already Have
 
-| Feature                              | Description                                          |
-| ------------------------------------ | ---------------------------------------------------- |
-| 🧑‍💻 **User Registration**          | New users can register via `/api/users`              |
-| 🔐 **Password Hashing**              | Passwords are securely hashed with `BCrypt`          |
-| 🗝️ **Login**                        | Users can log in and receive a **JWT token**         |
-| 📜 **JWT Authentication**            | Protected endpoints require valid JWT                |
-| 🔒 **Spring Security**               | JWT filter + custom `SecurityConfig`                 |
-| 🧪 **Tested via Postman**            | Confirmed end-to-end with real requests              |
-| 📦 **DTO Layer**                     | Clean separation between data and transport          |
-| 🗃️ **PostgreSQL**                   | Working with real DB, either local or Docker         |
-| 🛠️ **Project Structured by Layers** | `controller`, `repository`, `domain`, `config`, etc. |
-## 🧩 Optional Extras You _Could_ Add (Nice-to-Haves)
+| Feature                     | Description                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| 🧑‍💻 **User Registration**   | Users can sign up via `POST /api/users`. Validates input and saves to DB.   |
+| 🔐 **Password Hashing**     | Passwords are hashed using **BCrypt** for security before storing.         |
+| 🗝️ **Login**                | Authenticated via email + password on `POST /api/users/login`.              |
+| 📜 **JWT Authentication**   | Users receive a JWT token which is required to access protected endpoints. |
+| 🔒 **Spring Security**      | Uses custom `SecurityConfig` and JWT filters to secure the application.    |
+| 🧪 **Tested via Postman**   | All flows (register, login, fetch, update, delete) tested via Postman.     |
+| 📦 **DTO Layer**            | Clean separation of domain and API contracts (e.g. no raw password return).|
+| 🗃️ **PostgreSQL (fooddb)** | Uses a real PostgreSQL DB (in Docker or locally) for persistence.          |
+| 🛠️ **Layered Structure**    | Clear folders: `controller`, `domain`, `dto`, `repository`, `config`, `util`.|
 
-|Feature|Why Add It|
-|---|---|
-|✉️ **Email Uniqueness Validation**|Prevent duplicate accounts|
-|👤 **User Roles** (`ADMIN`, `USER`)|For future authorization features|
-|🔄 **Refresh Tokens**|So users don’t log in again every hour|
-|👁️ **User Profile Endpoint**|`/api/users/me` to get current user info from JWT|
-|🔐 **JWT Expiry Handling**|Custom error when token expires|
-|🧪 **Unit & Integration Tests**|Boost reliability, especially when adding more services|
-|💾 **Persistence on App Restart**|Use volume or init script if using Docker|
-|📄 **OpenAPI/Swagger Docs**|For better developer experience|
+
+## 🙏 Final Thoughts
+
+This project was built with love and curiosity. I ran into errors, Googled a LOT, asked dumb questions, and slowly put the puzzle together.
+
+💬 If you're a beginner like me: **don’t give up!** Every bug teaches you something.
+
+---
