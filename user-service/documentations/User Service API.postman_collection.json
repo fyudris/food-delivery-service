@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "21ad195a-8f8e-4f9c-a2dd-fec25a3c05c3",
+		"name": "User Service API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2374525"
+	},
+	"item": [
+		{
+			"name": "Register new user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"johndoe\",\n    \"email\": \"johndoe@example.com\",\n    \"password\": \"johndoe123\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "- Creates a new user account by sending a username, email, and password.\n    \n- Returns a success response if registration is successful, or an error if the email already exists."
+			},
+			"response": []
+		},
+		{
+			"name": "Login user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"johndoe@example.com\",\n    \"password\": \"johndoe123\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				},
+				"description": "- Authenticates an existing user using email and password.\n    \n- Returns a `JWT token` which is required for accessing protected routes."
+			},
+			"response": []
+		},
+		{
+			"name": "List users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ0MzE3Mzc2LCJleHAiOjE3NDQzMjA5NzZ9.tF6KiqdE0lx-9OMojnEyyvqK7fYuyEgqkmpSCOPPqxM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "- Fetches a list of all registered users.\n    \n- Requires a valid `JWT token` in the `Authorization` header (`Bearer` ).\n    \n- Use this to test if token-based authentication is working correctly."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ0MzE3MTMxLCJleHAiOjE3NDQzMjA3MzF9.X4OPmTNG2MrUzqjZ2ofCApyVHZ3w9taUz4xAkKtJtEs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/users/19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"19"
+					]
+				},
+				"description": "- Deletes a user account by ID.\n    \n- Requires authentication via JWT token and the user’s ID in the URL.\n    \n- Use this to test protected delete operations."
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ0MzE3Mzc2LCJleHAiOjE3NDQzMjA5NzZ9.tF6KiqdE0lx-9OMojnEyyvqK7fYuyEgqkmpSCOPPqxM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"new_johndoe\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"19"
+					]
+				},
+				"description": "- Updates user data, such as username or email.\n    \n- Requires the user’s ID in the URL and a valid JWT token in the header.\n    \n- Payload includes the new data to be updated."
+			},
+			"response": []
+		}
+	]
+}
