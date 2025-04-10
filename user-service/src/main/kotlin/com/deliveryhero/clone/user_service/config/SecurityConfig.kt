@@ -27,15 +27,16 @@ class SecurityConfig(
             .csrf { it.disable() }
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()  // allow registration
-                    .requestMatchers("/api/users/login").permitAll()             // allow login
-                    .anyRequest().authenticated()                                // protect the rest
+                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()       // For registration
+                    .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll() // For login
+                    .anyRequest().authenticated()
             }
-
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
 
         return http.build()
     }
+
     @Bean
     fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager {
         return authConfig.authenticationManager
